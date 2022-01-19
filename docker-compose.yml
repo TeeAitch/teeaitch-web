@@ -1,24 +1,19 @@
-version: '3.8'
+version: '3'
 
 services:
-
-  web: 
+  webserver: 
     image: nginx:latest
-    restart: always 
-    volumes: 
-      - ./public:/var/www/html
-      - ./conf.d:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/nginx/ssl
-      - ./certbot/data:/var/www/certbot
-    ports:
+    ports: 
       - 80:80
       - 443:443 
- 
+    restart: always 
+
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d/:ro 
+      - ./certbot/www:/var/www/cerbot/:ro 
+  
   certbot: 
-    image: certbot/certbot:latest 
-    command: certonly --webroot --webroot-path=/var/www/certbot --email teeaitch.git@gmail.com --agree-tos --no-eff-email -d teeaitch.net -d www.teeaitch.net
-    volumes: 
-      - ./public:/var/www/html
-      - ./conf.d:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/nginx/ssl
-      - ./certbot/data:/var/www/certbot
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw 
+      - ./certbot/conf/:/etc/letsencrypt/:rw
