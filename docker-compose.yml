@@ -1,6 +1,10 @@
 version: '3.8'
 
 services:
+  fritz: 
+    image: . 
+    volumes:
+      - ./buildprod/:/skile/build/distributions/
   webserver: 
     image: nginx:latest
     ports: 
@@ -10,7 +14,7 @@ services:
       - ./nginx/conf/:/etc/nginx/conf.d/
       - ./certbot/www:/var/www/certbot/
       - ./certbot/conf/:/etc/nginx/ssl/
-      - ./src/jsMain/resources/:/usr/share/nginx/html  
+      - ./buildprod/:/usr/share/nginx/html  
   certbot: 
     image: certbot/certbot:latest 
     volumes: 
